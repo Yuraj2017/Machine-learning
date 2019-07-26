@@ -1,0 +1,25 @@
+from sklearn import tree
+print("1 is bumpy and 0 ")
+features = [[180, 1], [120, 0], [130, 0], [150, 1]]
+labels = [1, 0, 0, 1]
+tree = tree.DecisionTreeClassifier()
+tree = tree.fit(features, labels)
+weight = input("What is the weight: ")
+texture = input("What does it feel like bumpy or smooth?: ")
+
+if texture.lower() == "bumpy":
+  texture = 1
+elif texture.lower() == "smooth":
+  texture = 0
+else:
+  print("Write smooth or bumpy")
+
+prediction = tree.predict([[int(weight), texture]])
+
+if prediction == 1:
+  print("It is an orange")
+  print(prediction)
+else:
+  print("It is and apple")
+  print(prediction)
+
