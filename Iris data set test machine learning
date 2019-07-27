@@ -1,0 +1,24 @@
+import numpy as np
+from sklearn.datasets import load_iris
+from sklearn import tree
+iris = load_iris()
+test_idx = [1,49,99]
+
+
+#Training target (means whether it is setosa etc... the type of flower) will hava all the targets 0,1 and 2 except for the answers on index 0, 50 and 100
+#Training data includes all data (meaning sizes) except for the ones at index 0, 50 and 100
+
+training_target = np.delete(iris.target, test_idx)
+training_data = np.delete(iris.data, test_idx, axis = 0)
+
+tree = tree.DecisionTreeClassifier()
+tree.fit(training_data, training_target)
+
+#Testing will include the missing data in the training phase
+
+test_target = iris.target[test_idx]
+test_data = iris.data[test_idx]
+
+
+print(test_target)
+print(tree.predict(test_data))
