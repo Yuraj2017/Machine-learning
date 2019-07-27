@@ -1,0 +1,66 @@
+from sklearn.datasets import load_breast_cancer
+from sklearn import tree
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
+cancer = load_breast_cancer()
+data = cancer.data
+target = cancer.target
+
+data_new = SelectKBest(chi2, k=18).fit_transform(data, target)
+print(data_new.shape)
+
+# Collected data training
+
+
+clf = tree.DecisionTreeClassifier()
+clf.fit(data_new, target)
+
+
+
+# User inputs
+radius_mean = float(input("Radius mean - What is mean of distances from center to points on the perimeter: "))
+
+texture_mean = float(input("Texture mean - What is mean standard deviation of gray-scale values: "))
+
+perimeter_mean = float(input("Perimeter mean - What is mean size of the core tumor: "))
+
+area_mean = float(input("Area mean - What is mean area: "))
+
+smoothness_mean = float(input("Smoothness mean - What is mean of local variation in radius lengths: "))
+
+compactness_mean = float(input("Compactness mean - What is mean of perimeter^2 / area - 1.0: "))
+
+concavity_mean = float(input("Concavity mean - What is mean of severity of concave portions of the contour: "))
+
+concave_points_mean = float(input("Concave points mean - What is mean for number of concave portions of the contour: "))
+
+symmetry_mean = float(input("Symmetry mean - What is mean of symmetry: "))
+
+fractal_dimension = float(input("What is mean  for coastline approximation - 1: "))
+
+radius_se = float(input("What is standard error for the mean of distances from center to points on the perimeter: "))
+
+texture_se = float(input("What is standard error for the mean of distances from center to points on the perimeter: "))
+
+perimeter_se = float(input("What is standard error for standard deviation of gray-scale values: "))
+
+area_se = float(input("What is area standard error: "))
+
+smoothness_se = float(input("What is standard error for local variation in radius lengths: "))
+
+compactness_se = float(input("What is standard error for perimeter^2 / area - 1.0: "))
+
+concavity_se = float(input("What is standard error for severity of concave portions of the contour: "))
+
+concave_points_se = float(input("What is standard error for number of concave portions of the contour: "))
+
+prediction = clf.predict([[radius_mean, texture_mean, perimeter_mean, area_mean, smoothness_mean, compactness_mean, concavity_mean, concave_points_mean, symmetry_mean, fractal_dimension, radius_se, texture_se, perimeter_se, area_se, smoothness_se, compactness_se, concavity_se, concave_points_se]])
+
+print(prediction)
+ 
+if prediction == 0:
+  print("You have maligant breast cancer")
+else:
+  print("you have benign breast cancer")
+
+  
