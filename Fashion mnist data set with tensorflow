@@ -1,0 +1,61 @@
+import tensorflow as tf
+from tensorflow import keras
+import numpy as np
+import matplotlib.pyplot as plt
+
+data = keras.datasets.fashion_mnist
+
+(train_images, train_labels), (test_images, test_labels) = data.load_data()
+
+garnments = ["T-shirt/top", "Trouser", "Pullover", "Dress", "Coat", "Sandal", 
+"Shirt", "Sneaker", "Bag", "Ankle boot"]
+
+
+#keras.Sequential([ ]): This is basically stating what the layers of the neural network are
+#([keras.layers.Flatten(input_shape =(28,28)): This makes the data into a single list instead of rows
+#keras.layers.Dense(128, activation="relu"): This adds the first layers of the neurons the hidden layer making all the weights and biases complete and all connected to the 128 neurons of the hidden layer
+#keras.layers.Dense(10, activation ="softmax"): This adds the last output layer of 10 neurons to classify what clothing it is as well as the "softmax" function which makes the output into probabilities.
+
+train_images = train_images/255.0
+test_images = test_images/255.0
+
+
+
+
+
+model = keras.Sequential([keras.layers.Flatten(input_shape =(28,28)), keras.layers.Dense(128, activation="relu"), keras.layers.Dense(10, activation ="softmax")])
+
+
+#This code is to be able to choose what optimiser you want/loss function you want. and the accuracy is to tell the program you want to be able to find the most accurate answer
+
+model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
+
+
+#To train the model: epochs is the amount of time the neural network will see the same type of image, for example it will see the same pant 5 times and then move onto the next one.
+
+model.fit(train_images, train_labels, epochs= 5)
+
+
+#To be able to test the neural network and see results when training it:
+
+#test_loss, test_accuracy = model.evaluate(test_images, test_labels)
+
+#print("Test accuracy" + str(test_accuracy))
+
+#To use to predict the answers
+
+prediction = model.predict(test_images)
+
+
+for i in range(6):
+    plt.grid(False)
+    plt.imshow(test_images[i], cmap = plt.cm.binary)
+    plt.xlabel("Actual labels: " + garnments[test_labels[i]])
+    plt.title("Predicted labels:" + garnments[np.argmax(prediction[i])] + " " +  str(round(max(prediction[i]), 3))) 
+    plt.show()
+
+
+#The code below shows a prediction for the first image, we use garnments list to show the name of the clothing instead of just numbers. While we use the np.argmax to choose the highest probability of the output 
+#print("The prediction for the first image is:", garnments[np.argmax(prediction[0])], max(prediction[0]))
+#plt.imshow(train_images[7], cmap = plt.cm.binary)
+#plt.show()
